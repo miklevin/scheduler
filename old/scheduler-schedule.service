@@ -1,0 +1,20 @@
+# This file must be in /etc/systemd/system/ to enable and start the service.
+# You must put the file there with Administrator (sudo) level priveleges.
+# Any changes to this file once active require sudo systemd daemon-reload
+
+[Unit]
+Description=Run Python script to handle scheduling
+ 
+[Service]
+Type=forking
+Restart=always
+RestartSec=5
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/github/scheduler/
+ExecStart=/usr/bin/screen -dmS scheduler /home/ubuntu/py310/bin/python3.10 /home/ubuntu/github/scheduler/scheduler.py
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

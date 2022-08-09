@@ -4,16 +4,13 @@ from time import sleep
 from os import environ
 from sys import stdout
 from subprocess import Popen, PIPE
-from huey import SqliteHuey, crontab
 from sqlitedict import SqliteDict as sqldict
 from datetime import datetime, date, timedelta
-#from schedule import every, repeat, run_pending, CancelJob
+from schedule import every, repeat, run_pending, CancelJob
 
-
-huey = SqliteHuey(filename='/tmp/demo.db')
 
 pulse_count = 0
-print("The pulse service has started using Huey.")
+print("The pulse service has started.")
 
 
 def run(command, cwd=None):
@@ -38,22 +35,17 @@ def seconds_from_now(secs):
     return asoon
 
 
-#@repeat(every(60).seconds)
-@huey.periodic_task(crontab(minute='*/1'))
+@repeat(every(60).seconds)
 def pulse():
     global pulse_count
     pulse_count += 1
     anow = f"{pulse_count} - {datetime.now()}"
     with open('/tmp/scheduler.txt', 'a') as fh:
-        print(f"{anow} EVERY MINUTE FROM HUEY.")
+        print(f"{anow} logged.")
         fh.write((anow) + '\n')
 
-in5secs = seconds_from_now(60)
-anhour = in5secs.hour
-aminute = in5secs.minute
 
-#@repeat(every().day.at(seconds_from_now(5).strftime("%H:%M:%S")))
-@huey.periodic_task(crontab(hour=anhour, minute=aminute))
+@repeat(every().day.at(seconds_from_now(5).strftime("%H:%M:%S")))
 def sendcats():
     print("Sending email")
     pyx = "/home/ubuntu/py310/bin/python3.10"
@@ -61,6 +53,9 @@ def sendcats():
     cmd = f"{pyx} {cwd}sendcats.py"
     run(cmd, cwd=cwd)
     anow = f"{datetime.now()}"
-    # return CancelJob
+    return CancelJob
 
 
+while True:
+    run_pending()
+    sleep(1)
