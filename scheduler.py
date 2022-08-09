@@ -56,6 +56,5 @@ def sendcats():
     cwd = "/home/ubuntu/github/scheduler/"
     cmd = f"{pyx} {cwd}sendcats.py"
     run(cmd, cwd=cwd)
-    # return CancelJob
 
 
