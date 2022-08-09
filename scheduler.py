@@ -4,7 +4,6 @@ from os import environ
 from sys import stdout
 from subprocess import Popen, PIPE
 from huey import SqliteHuey, crontab
-from sqlitedict import SqliteDict as sqldict
 from datetime import datetime, date, timedelta
 
 
