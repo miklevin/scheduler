@@ -1,5 +1,4 @@
 import shlex
-# import schedule
 from time import sleep
 from os import environ
 from sys import stdout
@@ -7,10 +6,9 @@ from subprocess import Popen, PIPE
 from huey import SqliteHuey, crontab
 from sqlitedict import SqliteDict as sqldict
 from datetime import datetime, date, timedelta
-#from schedule import every, repeat, run_pending, CancelJob
 
 
-huey = SqliteHuey(filename='/tmp/demo.db')
+huey = SqliteHuey(filename='/tmp/scheduler.db')
 
 pulse_count = 0
 print("The pulse service has started using Huey.")
@@ -38,7 +36,6 @@ def seconds_from_now(secs):
     return asoon
 
 
-#@repeat(every(60).seconds)
 @huey.periodic_task(crontab(minute='*/1'))
 def pulse():
     global pulse_count
@@ -52,7 +49,6 @@ in5secs = seconds_from_now(60)
 anhour = in5secs.hour
 aminute = in5secs.minute
 
-#@repeat(every().day.at(seconds_from_now(5).strftime("%H:%M:%S")))
 @huey.periodic_task(crontab(hour=anhour, minute=aminute))
 def sendcats():
     print("Sending email")
@@ -60,7 +56,6 @@ def sendcats():
     cwd = "/home/ubuntu/github/scheduler/"
     cmd = f"{pyx} {cwd}sendcats.py"
     run(cmd, cwd=cwd)
-    anow = f"{datetime.now()}"
     # return CancelJob
 
 
