@@ -2,6 +2,7 @@ import shlex
 from time import sleep
 from os import environ
 from sys import stdout
+from art import text2art
 from subprocess import Popen, PIPE
 from huey import SqliteHuey, crontab
 from datetime import datetime, date, timedelta
@@ -10,7 +11,8 @@ from datetime import datetime, date, timedelta
 huey = SqliteHuey(filename='/tmp/scheduler.db')
 
 pulse_count = 0
-print("The pulse service has started using Huey.")
+# print("The pulse service has started using Huey.")
+print(text2art("Hello World"))
 
 
 def run(command, cwd=None):

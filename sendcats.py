@@ -1,15 +1,15 @@
 import PIL
-import imagehash
-from io import BytesIO
-
 import glob
 import smtplib
 import requests
+import imagehash
 from os import remove
 from time import sleep
+from io import BytesIO
 from pathlib import Path
 from zipfile import ZipFile
 from email import encoders
+from art import text2art as fig
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -99,8 +99,8 @@ msgdict.attach(mimecats)
 
 try:
     server.sendmail(email, mail_to, msgdict.as_string())
-    print ('email sent')
+    print(fig('Email Sent!'))
 except:
-    print ('error sending mail')
+    print('error sending mail')
 
 server.quit()

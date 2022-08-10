@@ -1,5 +1,6 @@
 *.txt
 *.zip
+*.swp
 old
 cats
 __pycache__/
